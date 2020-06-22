@@ -262,10 +262,9 @@ function OpenShopMenu(elements, restoreCoords, shopCoords)
 
 		ESX.Game.SpawnLocalVehicle(data.current.model, shopCoords, 0.0, function(vehicle)
 			table.insert(spawnedVehicles, vehicle)
-			--TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-			FreezeEntityPosition(vehicle, false)
+			TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+			FreezeEntityPosition(vehicle, true)
 			SetModelAsNoLongerNeeded(data.current.model)
-			ESX.ShowNotification('Your Vehicle is Ready')
 
 			if data.current.props then
 				ESX.Game.SetVehicleProperties(vehicle, data.current.props)
@@ -276,10 +275,9 @@ function OpenShopMenu(elements, restoreCoords, shopCoords)
 	WaitForVehicleToLoad(elements[1].model)
 	ESX.Game.SpawnLocalVehicle(elements[1].model, shopCoords, 0.0, function(vehicle)
 		table.insert(spawnedVehicles, vehicle)
-		--TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
-		FreezeEntityPosition(vehicle, false)
+		TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+		FreezeEntityPosition(vehicle, true)
 		SetModelAsNoLongerNeeded(elements[1].model)
-		ESX.ShowNotification('Your Vehicle is Ready')
 
 		if elements[1].props then
 			ESX.Game.SetVehicleProperties(vehicle, elements[1].props)
