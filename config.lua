@@ -368,48 +368,57 @@ Config.AuthorizedWeapons = {
 Config.AuthorizedVehicles = {
 	car = {
 		officer = {
-		    {model = 'police', price = 1}
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500}
         },
         
         senior_officer = {
-		    {model = 'police', price = 1}
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500}
 		},
 
 		inspector = {
-			{model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policeb', price = 1}
         },
         
         senior_inspector = {
-			{model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policeb', price = 1}
         },
         
         chief_inspector = {
-			{model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policeb', price = 1}
 		},
 
 		sup = {
-		    {model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policet', price = 1},
 			{model = 'policeb', price = 1}
         },
         
         sen_sup = {
-		    {model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policet', price = 1},
 			{model = 'policeb', price = 1}
         },
         
         chief_sup = {
-		    {model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policet', price = 1},
 			{model = 'policeb', price = 1}
 		},
 
 		director = {
-            {model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policet', price = 1},
 			{model = 'policeb', price = 1},
 			{model = 'riot', price = 1},
@@ -417,7 +426,8 @@ Config.AuthorizedVehicles = {
         },
         
         depd_general = {
-            {model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policet', price = 1},
 			{model = 'policeb', price = 1},
 			{model = 'riot', price = 1},
@@ -425,7 +435,8 @@ Config.AuthorizedVehicles = {
 		},
 
 		boss = {
-		    {model = 'police', price = 1},
+			{model = 'police3', price = 1},
+			{model = 'polgs350', price = 500},
 			{model = 'policet', price = 1},
 			{model = 'policeb', price = 1},
 		    {model = 'riot', price = 1},
