@@ -16,7 +16,7 @@ Config.HandcuffTimer              = 15 * 60000 -- 15 mins
 Config.EnableJobBlip              = true -- enable blips for cops on duty, requires esx_society
 Config.EnableCustomPeds           = true -- enable custom peds in cloak room? See Config.CustomPeds below to customize peds
 
-Config.EnableESXService           = true -- enable esx service?
+Config.EnableESXService           = false -- enable esx service?
 Config.MaxInService               = 30
 
 Config.Locale                     = 'en'
@@ -73,8 +73,17 @@ Config.PoliceStations = {
 			}
 		},
 
-		BossActions = {
-		}
+
+		FastTravelsPrompt = {
+			{
+				From = vector3(441.6, -995.48, 29.39),
+				To = {coords = vector3(1849.31, 3696.06, 33.27), heading = 208.22},
+				Marker = {type = 1, x = 1.5, y = 1.5, z = 0.5, r = 255, g = 255, b = 255, a = 100, rotate = false},
+				Prompt = _U('sandypd')
+			}
+		},
+
+		BossActions = {}
 
     },
 
@@ -115,7 +124,29 @@ Config.PoliceStations = {
                 {coords = vector3(-1095.7, -832.4, 36.7), heading = 124.9, radius = 10.0}
                 }
             }
-        },
+		},
+		
+		FastTravelsPrompt = {
+			{
+				From = vector3(-1084.73, -818.77, 13.58),
+				To = {coords = vector3(-456.29, 6014.14, 30.72), heading = 315.96},
+				Marker = {type = 1, x = 1.5, y = 1.5, z = 0.5, r = 255, g = 255, b = 255, a = 100, rotate = false},
+				Prompt = _U('paletopd')
+			},
+			{
+				From = vector3(-1091.88, -810.73, 4.18),
+				To = {coords = vector3(1779.65, 2592.91, 49.55), heading = 178.62},
+				Marker = {type = 1, x = 1.5, y = 1.5, z = 0.5, r = 255, g = 255, b = 255, a = 100, rotate = false},
+				Prompt = _U('jail')
+			},
+			{
+				From = vector3(1779.65, 2592.91, 49.25),
+				To = {coords = vector3(-1091.88, -810.73, 4.48), heading = 205.81},
+				Marker = {type = 1, x = 1.5, y = 1.5, z = 0.5, r = 255, g = 255, b = 255, a = 100, rotate = false},
+				Prompt = _U('mainpd')
+			}
+		},
+
         BossActions = {
             vector3(-1113.5, -833.5, 34.4)
         }        
@@ -157,7 +188,18 @@ Config.PoliceStations = {
                 {coords = vector3(-475.4, 5988.4, 30.3), heading = 313.02, radius = 10.0}
                 }
             }
-        },
+		},
+		
+
+		FastTravelsPrompt = {
+			{
+				From = vector3(-456.29, 6014.14, 30.42),
+				To = {coords = vector3(-1084.73, -818.77, 13.88), heading = 216.84},
+				Marker = {type = 1, x = 1.5, y = 1.5, z = 0.5, r = 255, g = 255, b = 255, a = 100, rotate = false},
+				Prompt = _U('mainpd')
+			}
+		},
+		
         BossActions = {}        
     },
 
@@ -190,7 +232,18 @@ Config.PoliceStations = {
         },
 
         Helicopters = {
-        },
+		},
+		
+
+		FastTravelsPrompt = {
+			{
+				From = vector3(1849.31, 3696.06, 32.97),
+				To = {coords = vector3(441.6, -995.48, 29.69), heading = 1.73},
+				Marker = {type = 1, x = 1.5, y = 1.5, z = 0.5, r = 255, g = 255, b = 255, a = 100, rotate = false},
+				Prompt = _U('centralpd')
+			}
+		},
+
         BossActions = {
         }        
     }

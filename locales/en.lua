@@ -149,4 +149,10 @@ Locales['en'] = {
   -- Notifications
   ['alert_police'] = 'police alert',
   ['phone_police'] = 'police',
+  --Teleporters
+  ['paletopd'] = 'To Paleto PD',
+  ['mainpd'] = 'To Main PD',
+  ['sandypd'] = 'To Sandy Shoes PD',
+  ['centralpd'] = 'To Central PD',
+  ['jail'] = 'To Boilingbroke',
 }
