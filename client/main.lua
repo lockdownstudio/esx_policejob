@@ -119,46 +119,6 @@ function OpenCloakroomMenu()
 		end
 
 -- remove citizen wear restriction		if Config.EnableESXService and data.current.value ~= 'citizen_wear' then
-			if Config.EnableESXService then
-			local awaitService
-
-			ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
-				if not isInService then
-
-					ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
-						if not canTakeService then
-							ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
-						else
-							awaitService = true
-							playerInService = true
-
-							local notification = {
-								title    = _U('service_anonunce'),
-								subject  = '',
-								msg      = _U('service_in_announce', GetPlayerName(PlayerId())),
-								iconType = 1
-							}
-
-							TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
-							TriggerEvent('esx_policejob:updateBlip')
-							ESX.ShowNotification(_U('service_in'))
-						end
-					end, 'police')
-
-				else
-					awaitService = true
-				end
-			end, 'police')
-
-			while awaitService == nil do
-				Citizen.Wait(5)
-			end
-
-			-- if we couldn't enter service don't let the player get changed
-			if not awaitService then
-				return
-			end
-		end
 
 		if data.current.uniform then
 			setUniform(data.current.uniform, playerPed)
@@ -875,6 +835,24 @@ function OpenPutStocksMenu()
 	end)
 end
 
+function FastTravel(coords, heading)
+	local playerPed = PlayerPedId()
+
+	DoScreenFadeOut(800)
+
+	while not IsScreenFadedOut() do
+		Citizen.Wait(500)
+	end
+
+	ESX.Game.Teleport(playerPed, coords, function()
+		DoScreenFadeIn(800)
+
+		if heading then
+			SetEntityHeading(playerPed, heading)
+		end
+	end)
+end
+
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	ESX.PlayerData.job = job
@@ -925,6 +903,12 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 		CurrentAction     = 'menu_boss_actions'
 		CurrentActionMsg  = _U('open_bossmenu')
 		CurrentActionData = {}
+	elseif part == 'FastTravelsPrompt' then
+		local travelItem = Config.PoliceStations[station][part][partNum]
+
+		CurrentAction = part
+		CurrentActionMsg = travelItem.Prompt
+		CurrentActionData = {to = travelItem.To.coords, heading = travelItem.To.heading}
 	end
 end)
 
@@ -1259,6 +1243,22 @@ Citizen.CreateThread(function()
 						end
 					end
 				end
+
+				-- Fast Travels (Prompt)
+			for stationNum,station in pairs(Config.PoliceStations) do
+				for k,v in ipairs(station.FastTravelsPrompt) do
+					local distance = #(playerCoords - v.From)
+
+					if distance < Config.DrawDistance then
+						DrawMarker(v.Marker.type, v.From, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, v.Marker.x, v.Marker.y, v.Marker.z, v.Marker.r, v.Marker.g, v.Marker.b, v.Marker.a, false, false, 2, v.Marker.rotate, nil, nil, false)
+						letSleep = false
+
+						if distance < v.Marker.x then
+							isInMarker, currentStation, currentPart, currentPartNum = true, stationNum, 'FastTravelsPrompt', k
+						end
+					end
+				end
+			end
 			end
 
 			if isInMarker and not HasAlreadyEnteredMarker or (isInMarker and (LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum)) then
@@ -1291,6 +1291,7 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
+
 
 -- Enter / Exit entity zone events
 Citizen.CreateThread(function()
@@ -1339,6 +1340,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
+
 -- Key Controls
 Citizen.CreateThread(function()
 	while true do
@@ -1348,7 +1350,7 @@ Citizen.CreateThread(function()
 			ESX.ShowHelpNotification(CurrentActionMsg)
 
 			if IsControlJustReleased(0, 38) and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
-
+				
 				if CurrentAction == 'menu_cloakroom' then
 					OpenCloakroomMenu()
 				elseif CurrentAction == 'menu_armory' then
@@ -1388,6 +1390,8 @@ Citizen.CreateThread(function()
 					end, { wash = false }) -- disable washing money
 				elseif CurrentAction == 'remove_entity' then
 					DeleteEntity(CurrentActionData.entity)
+				elseif CurrentAction == 'FastTravelsPrompt' then
+					FastTravel(CurrentActionData.to, CurrentActionData.heading)
 				end
 
 				CurrentAction = nil
@@ -1395,6 +1399,47 @@ Citizen.CreateThread(function()
 		end -- CurrentAction end
 
 		if IsControlJustReleased(0, 167) and not isDead and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
+			-- Temporarily binded trigger service to F6 so that there is no need to change to go on service.
+			if Config.EnableESXService then
+				local awaitService
+	
+				ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
+					if not isInService then
+	
+						ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
+							if not canTakeService then
+								ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
+							else
+								awaitService = true
+								playerInService = true
+	
+								local notification = {
+									title    = _U('service_anonunce'),
+									subject  = '',
+									msg      = _U('service_in_announce', GetPlayerName(PlayerId())),
+									iconType = 1
+								}
+	
+								TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
+								TriggerEvent('esx_policejob:updateBlip')
+								ESX.ShowNotification(_U('service_in'))
+							end
+						end, 'police')
+	
+					else
+						awaitService = true
+					end
+				end, 'police')
+	
+				while awaitService == nil do
+					Citizen.Wait(5)
+				end
+	
+				-- if we couldn't enter service don't let the player get changed
+				if not awaitService then
+					return
+				end
+			end
 			if not Config.EnableESXService then
 				OpenPoliceActionsMenu()
 			elseif playerInService then
