@@ -119,46 +119,6 @@ function OpenCloakroomMenu()
 		end
 
 -- remove citizen wear restriction		if Config.EnableESXService and data.current.value ~= 'citizen_wear' then
-			if Config.EnableESXService then
-			local awaitService
-
-			ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
-				if not isInService then
-
-					ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
-						if not canTakeService then
-							ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
-						else
-							awaitService = true
-							playerInService = true
-
-							local notification = {
-								title    = _U('service_anonunce'),
-								subject  = '',
-								msg      = _U('service_in_announce', GetPlayerName(PlayerId())),
-								iconType = 1
-							}
-
-							TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
-							TriggerEvent('esx_policejob:updateBlip')
-							ESX.ShowNotification(_U('service_in'))
-						end
-					end, 'police')
-
-				else
-					awaitService = true
-				end
-			end, 'police')
-
-			while awaitService == nil do
-				Citizen.Wait(5)
-			end
-
-			-- if we couldn't enter service don't let the player get changed
-			if not awaitService then
-				return
-			end
-		end
 
 		if data.current.uniform then
 			setUniform(data.current.uniform, playerPed)
@@ -1390,7 +1350,7 @@ Citizen.CreateThread(function()
 			ESX.ShowHelpNotification(CurrentActionMsg)
 
 			if IsControlJustReleased(0, 38) and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
-
+				
 				if CurrentAction == 'menu_cloakroom' then
 					OpenCloakroomMenu()
 				elseif CurrentAction == 'menu_armory' then
@@ -1439,6 +1399,47 @@ Citizen.CreateThread(function()
 		end -- CurrentAction end
 
 		if IsControlJustReleased(0, 167) and not isDead and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
+			-- Temporarily binded trigger service to F6 so that there is no need to change to go on service.
+			if Config.EnableESXService then
+				local awaitService
+	
+				ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
+					if not isInService then
+	
+						ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
+							if not canTakeService then
+								ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
+							else
+								awaitService = true
+								playerInService = true
+	
+								local notification = {
+									title    = _U('service_anonunce'),
+									subject  = '',
+									msg      = _U('service_in_announce', GetPlayerName(PlayerId())),
+									iconType = 1
+								}
+	
+								TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
+								TriggerEvent('esx_policejob:updateBlip')
+								ESX.ShowNotification(_U('service_in'))
+							end
+						end, 'police')
+	
+					else
+						awaitService = true
+					end
+				end, 'police')
+	
+				while awaitService == nil do
+					Citizen.Wait(5)
+				end
+	
+				-- if we couldn't enter service don't let the player get changed
+				if not awaitService then
+					return
+				end
+			end
 			if not Config.EnableESXService then
 				OpenPoliceActionsMenu()
 			elseif playerInService then

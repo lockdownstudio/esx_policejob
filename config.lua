@@ -16,7 +16,7 @@ Config.HandcuffTimer              = 15 * 60000 -- 15 mins
 Config.EnableJobBlip              = true -- enable blips for cops on duty, requires esx_society
 Config.EnableCustomPeds           = true -- enable custom peds in cloak room? See Config.CustomPeds below to customize peds
 
-Config.EnableESXService           = false -- enable esx service?
+Config.EnableESXService           = true -- enable esx service?
 Config.MaxInService               = 30
 
 Config.Locale                     = 'en'
@@ -97,12 +97,14 @@ Config.PoliceStations = {
         },
 
         Cloakrooms = {
-            vector3(-1098.5, -831.5, 14.3)
+			vector3(-1098.5, -831.5, 14.3),
+			vector3(1778.22, 2543.6, 45.8)
         },
 
         Armories = {
             vector3(-1098.7, -826.4, 14.3)
-        },
+		},
+		
 
         Vehicles = {
             {
